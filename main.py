@@ -1,7 +1,7 @@
 import logging
 import os
 
-# import overseerr
+import overseerr
 import pprint
 import time
 
@@ -13,14 +13,14 @@ import radarr
 
 def get_Media():
     movies = radarr.Radarr()
-    # requests = overseerr.Overseerr()
+    requests = overseerr.Overseerr()
 
     total_Movies = movies.get_Movies()
-    # total_Requests = requests.get_Movies()
+    total_Requests = requests.get_Movies()
 
-    # for item in total_Requests:
-    #     if item['externalServiceId'] in total_Movies:
-    #         total_Movies[item['externalServiceId']]['OverseerrID'] = item['id']
+    for item in total_Requests:
+        if item['externalServiceId'] in total_Movies:
+            total_Movies[item['externalServiceId']]['OverseerrID'] = item['id']
 
     return total_Movies
 
@@ -28,15 +28,15 @@ def get_Media():
 def remove_Media():
     movies_parsed = get_Media()
     r = radarr.Radarr()
-    # o = overseerr.Overseerr()
+    o = overseerr.Overseerr()
     p = plex.Plex()
     pprint.pprint(movies_parsed)
     if len(movies_parsed) >= 1:
         for key in movies_parsed.keys():
             r.delete_Movie(key)
             print(f"Radarr: {movies_parsed[key]['title']}")
-            # o.delete_Movie(movies_parsed[key]['OverseerrID'])
-            # print(f"Overseer: {movies_parsed[key]['title']}")
+            o.delete_Movie(movies_parsed[key]['OverseerrID'])
+            print(f"Overseer: {movies_parsed[key]['title']}")
             p.scan_mediaFolder(moviePath=movies_parsed[key]["path"])
             print(f"Plex: {movies_parsed[key]['title']}")
     else:
@@ -68,8 +68,10 @@ if __name__ == "__main__":
             f.close()
             print(".env file generated")
     else:
-        remove_Media()
-        schedule.every().day.at("01:00").do(remove_Media)
+        # remove_Media()
+        seerr = overseerr.Overseerr()
+        seerr.add_popular_movies()
+        schedule.every().day.at("01:00").do(seerr.add_popular_movies)
 
         while True:
             schedule.run_pending()
