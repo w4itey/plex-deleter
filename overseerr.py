@@ -91,6 +91,9 @@ class Overseerr:
             elif response.status_code == 403:
                 logging.info("Unable to authenticate with Overseerr API")
                 logging.debug(response.json())
+            else:
+                logging.info("Unable to connect to Overseer API")
+                logging.warn(response.json())
 
 
 if __name__ == "__main__":
