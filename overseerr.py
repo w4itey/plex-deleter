@@ -88,6 +88,9 @@ class Overseerr:
                 logging.info(f'{item["title"]}: Already added to Overseer')
                 logging.debug(item)
                 logging.debug(response.json())
+            elif response.status_code == 403:
+                logging.info("Unable to authenticate with Overseerr API")
+                logging.debug(response.json())
 
 
 if __name__ == "__main__":
