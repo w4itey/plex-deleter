@@ -81,11 +81,11 @@ class Overseerr:
 
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
-                logging.info(f'{item['title']}: Added to Overseer')
+                logging.info(f'{item["title"]}: Added to Overseer')
                 logging.debug(item)
                 logging.debug(response.json())
             elif response.status_code == 409:
-                logging.info(f'{item['title']}: Already added to Overseer')
+                logging.info(f'{item["title"]}: Already added to Overseer')
                 logging.debug(item)
                 logging.debug(response.json())
 
