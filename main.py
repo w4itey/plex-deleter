@@ -1,14 +1,14 @@
 import logging
 import os
 
-import overseerr
+from applications import overseerr
 import pprint
 import time
 
 import schedule
 
-import plex
-import radarr
+from applications import plex
+from applications import radarr
 
 
 def get_Media():
