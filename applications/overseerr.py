@@ -7,6 +7,8 @@ from os import getenv
 import dotenv
 import requests
 
+from sources import stevenlu, trakt
+
 
 class Overseerr:
     def __init__(self, log="debug") -> None:
@@ -53,21 +55,20 @@ class Overseerr:
         return response.json()
 
     def add_popular_movies(self):
-        stenvenLU = "https://popular-movies-data.stevenlu.com/movies.json"
-        data = requests.request("GET", stenvenLU)
-        output = data.json()
-        logging.info("Processing Stenven Lu Popular Movie List")
-        logging.debug(output)
+        s = stevenlu.StevenLu().get_popular()
+        t = trakt.Trakt().get_popular()
+        movies = {}
+        movies.update(s)
+        movies.update(t)
 
         url = f"{self.url}/api/v1/request"
 
-        for item in output:
-            # x = self.search(item["title"])
-
+        for title, y in movies.items():
+            # x = self.search(title)
             payload = json.dumps(
                 {
-                    "mediaType": "movie",
-                    "mediaId": item["tmdb_id"],
+                    "mediaType": y["mediaType"],
+                    "mediaId": y["tmdb"],
                     "is4k": False,
                     "userId": 7,
                 }
@@ -80,20 +81,19 @@ class Overseerr:
             }
 
             response = requests.request("POST", url, headers=headers, data=payload)
+            print(response.status_code)
             if response.status_code == 200:
-                logging.info(f'{item["title"]}: Added to Overseer')
-                logging.debug(item)
+                logging.info(f"{title}: Added to Overseer")
+                logging.debug(title)
                 logging.debug(response.json())
             elif response.status_code == 409:
-                logging.info(f'{item["title"]}: Already added to Overseer')
-                logging.debug(item)
+                logging.info(f"{title}: Already added to Overseer")
+                logging.debug(title)
                 logging.debug(response.json())
             elif response.status_code == 403:
                 logging.info("Unable to authenticate with Overseerr API")
                 logging.debug(response.json())
-            else:
-                logging.info("Unable to connect to Overseer API")
-                logging.warn(response.json())
+        print("Finished adding popular movies")
 
 
 if __name__ == "__main__":
