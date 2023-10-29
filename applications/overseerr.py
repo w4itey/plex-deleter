@@ -82,7 +82,7 @@ class Overseerr:
 
             response = requests.request("POST", url, headers=headers, data=payload)
             print(response.status_code)
-            if response.status_code == 200:
+            if response.status_code == 201:
                 logging.info(f"{title}: Added to Overseer")
                 logging.debug(title)
                 logging.debug(response.json())
