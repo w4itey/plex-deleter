@@ -7,9 +7,6 @@ import requests
 
 class Trakt:
     def __init__(self) -> None:
-        self.clientID = (
-            "9431b71ca35fabcad233de95f610ea3bc6c623af25522c1adf2bc653635b9091"
-        )
         dotenv.load_dotenv()
         self.apiKey = getenv("TRAKT_ID")
 
@@ -29,6 +26,7 @@ class Trakt:
             }
 
             response = requests.request("GET", url, headers=headers)
+            print(response.status_code)
 
             for item in response.json():
                 if item.get("ids"):

@@ -59,9 +59,10 @@ if __name__ == "__main__":
         "OVERSEERR_API",
         "OVERSEER_URL",
         "DAYS_TO_KEEP",
+        "TRAKT_ID"
     ]
     if os.path.isfile(".env") is False:
-        logging.INFO("Env file not found, creating.")
+        logging.info("Env file not found, creating.")
         with open(".env", "w") as f:
             for line in env_File:
                 f.write(f"{line}=\n")
