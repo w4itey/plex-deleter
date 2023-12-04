@@ -5,7 +5,7 @@ on: [push]
   #   - cron: '00 01 * * *'
 
 jobs:
-  Add Movies:
+  Add_Movies:
     name: "Add Popular Movies"
     runs-on: self-hosted
     steps:
