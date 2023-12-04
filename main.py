@@ -72,8 +72,8 @@ if __name__ == "__main__":
         # remove_Media()
         seerr = overseerr.Overseerr()
         seerr.add_popular_movies()
-        schedule.every().day.at("01:00").do(seerr.add_popular_movies)
+        # schedule.every().day.at("01:00").do(seerr.add_popular_movies)
 
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
+        # while True:
+        #     schedule.run_pending()
+        #     time.sleep(1)
