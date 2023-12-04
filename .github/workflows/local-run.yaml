@@ -1,8 +1,8 @@
 ---
 name: "Run Script Every Night"
-on:
-  schedule:
-    - cron: '00 01 * * *'
+on: [push]
+  # schedule:
+  #   - cron: '00 01 * * *'
 
 jobs:
   Add Movies:
