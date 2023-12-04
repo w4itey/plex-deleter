@@ -1,0 +1,22 @@
+---
+name: "Run Script Every Night"
+on:
+  schedule:
+    - cron: '00 01 * * *'
+
+jobs:
+  Add Movies:
+    name: "Add Popular Movies"
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.12' 
+    - name: 'Add Custom Python Packages'
+      run: 'pip install -r requirements.txt'
+    - name: 'Create env file'
+      run: |
+        echo "${{ secrets.ENV }}" > .env
+    - name: 'Run Script'
+      run: 'python main.py'
